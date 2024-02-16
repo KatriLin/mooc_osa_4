@@ -47,10 +47,63 @@ test('new blogs are added in the correct way', async() => {
   .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
-  console.log("hellloooo!",blogsAtEnd)
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const title = blogsAtEnd.map(n => n.title)
+  expect(title).toContain('Test title for new blog')
+
+  const author = blogsAtEnd.map(n => n.author)
+  expect(author).toContain('Test author')
 })
 
+test('if likes do not have value, initial value is set to 0', async () => {
+  const newBlog = {
+    title: "Test title for new blog",
+    author: "Test author",
+    url: "www.testnewblogs.com",
+  }
+
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const likes = blogsAtEnd.map(n => n.likes)
+  expect(likes).toContain(0)
+})
+test('if title not defined, response code 400 Bad request', async () => {
+  const newBlog = {
+    author: "Test author",
+    url: "www.testnewblogs.com",
+    likes:5
+  }
+
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
+
+test('if url not defined, response code 400 Bad request', async () => {
+  const newBlog = {
+    title: "Test title for new blog",
+    author: "Test author",
+    likes:5
+  }
+
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
 afterAll(async () => {
   await mongoose.connection.close()
 })
