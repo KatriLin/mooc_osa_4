@@ -5,6 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const bcrypt = require('bcrypt')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -40,7 +41,7 @@ test('new blogs are added in the correct way', async() => {
   }
 
   await api
-  .post('api/blogs')
+  .post('/api/blogs')
   .send(newBlog)
   .expect(201)
   .expect('Content-Type', /application\/json/)

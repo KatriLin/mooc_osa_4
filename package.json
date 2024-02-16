@@ -9,7 +9,7 @@
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Katri",
-  "license": "ISC",
+  "license": "ISC", 
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.55.0",
