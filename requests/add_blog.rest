@@ -6,6 +6,5 @@ Content-Type: application/json
  "author": "Luigi",
   "url": "http://testiblog.com", 
   "likes": 55
-
   
 }
