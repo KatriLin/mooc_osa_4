@@ -1,10 +1,11 @@
 POST http://localhost:3003/api/blogs 
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hcmlhIiwiaWQiOiI2NWQ1ZGZiMjc0MGVhZWQ4NDdmZTRkNzUiLCJpYXQiOjE3MDg2MTE5ODUsImV4cCI6MTcwODYxNTU4NX0.wEIwF6IM-s2oSsNoJ4iq-eNXRAfAm0TyrA5wglskHk8
 
 {
-    "title": "Testing3",
-    "author":"Katri",
-    "url": "www.mypost.fi",
-    "likes": 10,
-    "user_id":"65cf39aa609c4181b0f95171"
+    "title": "KOKEILU",
+    "author":"Testaaja",
+    "url": "www.myptestblog.fi",
+    "likes": 5,
+    "user_id":"65d5dfb2740eaed847fe4d75"
 }

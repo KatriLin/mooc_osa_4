@@ -39,7 +39,27 @@ describe('when there is initially one user at db', () => {
     })
     
   })
-  
+  test('fails to create user if username is too short and response with error', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'io',
+      name: 'root',
+      password: 'abcd',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('username: must be at least 3 characters')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
   test('creation fails with proper statuscode and message if username already taken', async () => {
     const usersAtStart = await helper.usersInDb()
 
@@ -58,6 +78,7 @@ describe('when there is initially one user at db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(result.body.error.includes('expected `username` to be unique'))
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    
 
   })
 

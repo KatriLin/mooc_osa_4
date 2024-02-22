@@ -1,6 +1,9 @@
 const Blog = require('../models/blog')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+const supertest = require('supertest')
+const app = require('../app')
+const api = supertest(app)
 
 const initialBlogs = [
     {
@@ -62,9 +65,23 @@ const initialBlogs = [
     const users = await User.find({})
     return users.map(u => u.toJSON())
   }
+  const user = {
+    username: "Testi", 
+    name: "Testaaja H", 
+    password: "salainen"
+  }
+
+  const userLoginToken = async () => {
+    const response = await api
+    .post('/api/login')
+    .send(user)
+    console.log("testailua",response.body)
+  return response.body.token
+}
 
   module.exports = {
     initialBlogs, 
     blogsInDb,
     usersInDb,
+    userLoginToken
   }
