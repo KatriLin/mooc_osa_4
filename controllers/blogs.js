@@ -2,7 +2,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-const middleware = require('../utils/middleware')
+const {userExtractor} = require('../utils/middleware')
 
 
 blogsRouter.get('/', async (request, response) => {
@@ -23,33 +23,30 @@ blogsRouter.get('/', async (request, response) => {
           })
           .catch(error => next(error))
       })
-      blogsRouter.post('/',middleware.tokenExtractor,middleware.userExtractor,async (request, response) => {
-        const {title, author, url, likes} = request.body
-        console.log(request)
-        const user = request.user
-        //const user = await User.findById(body.userId)
-    
-        if (!title || !url) {
-          return response.status(400).json({ error: 'title or url is missing or invalid' })
-        }
+      blogsRouter.post('/',  async (request, response) => {
+        const body = request.body
+        //information about the user who created a blog is sent in the userId field of the request body
+        const user = await User.findById(body.userId)
         const blog = new Blog({
-          title: title,
-          author: author,
-          url: url,
-          likes:likes === undefined ? 0 : likes,
+          title: body.title,
+          author: body.author,
+          url: body.url,
+          likes: body.likes === undefined ? 0 : body.likes,
           user: user._id
         })
-    
       
         const savedBlog = await blog.save()
         user.blogs = user.blogs.concat(savedBlog._id)
         await user.save()
       
         response.status(201).json(savedBlog)
-    })
+      })
+    
+      
+      
      
 
-    blogsRouter.delete('/:id', middleware.tokenExtractor, async (request, response) => {
+    blogsRouter.delete('/:id', async (request, response) => {
       const blog = await Blog.findById(request.params.id)
       console.log("blog",blog)
       const user = await User.findById(decodedToken.id)

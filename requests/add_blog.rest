@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs 
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hcmlhIiwiaWQiOiI2NWQ1ZGZiMjc0MGVhZWQ4NDdmZTRkNzUiLCJpYXQiOjE3MDg5NDE2MDgsImV4cCI6MTcwODk0NTIwOH0.LY-OLiKwfzR_3EWhBZshN9Tti1QnqCDXvrny8ZbF_SY
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hcmlhIiwiaWQiOiI2NWQ1ZGZiMjc0MGVhZWQ4NDdmZTRkNzUiLCJpYXQiOjE3MDg5NDk5NTAsImV4cCI6MTcwODk1MzU1MH0.dz-d49LYM9sKg7y3dLZYDG7mzZZL1nndfWq6cEDY0tY
 
 {
 "title": "TOIIIIIIIII",
