@@ -2,8 +2,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-const middleware = require('../utils/middleware');
-
+const middleware = require('../utils/middleware')
 
 
 blogsRouter.get('/', async (request, response) => {
@@ -24,12 +23,12 @@ blogsRouter.get('/', async (request, response) => {
           })
           .catch(error => next(error))
       })
-  
-      blogsRouter.post('/',middleware.userExtractor,async (request, response) => {
+      blogsRouter.post('/',middleware.tokenExtractor,middleware.userExtractor,async (request, response) => {
         const {title, author, url, likes} = request.body
+        console.log(request)
         const user = request.user
-        
-        console.log("USER IN POST REQEUST",user)
+        //const user = await User.findById(body.userId)
+    
         if (!title || !url) {
           return response.status(400).json({ error: 'title or url is missing or invalid' })
         }
@@ -48,22 +47,24 @@ blogsRouter.get('/', async (request, response) => {
       
         response.status(201).json(savedBlog)
     })
+     
 
-blogsRouter.delete('/:id', middleware.userExtractor,async (request, response) => {
+    blogsRouter.delete('/:id', middleware.tokenExtractor, async (request, response) => {
+      const blog = await Blog.findById(request.params.id)
+      console.log("blog",blog)
+      const user = await User.findById(decodedToken.id)
+      if (!blog) {
+        return response.status(401).json({ error: 'missing blog' })
+      } 
+      if (user.id !== blog.user.toString()) {
+        return response.status(401).json({ error: 'not authorized to delete blog' })
+      }
+    
+      await Blog.findByIdAndRemove(request.params.id)
+      response.status(204).end()
+    })
   
-  const blog = await Blog.findById(request.params.id)
-  const user = request.user
-console.log("USER",user)
-  if (!blog) {
-    return response.status(404).json({ error: 'blog not found' })
-  } 
-  if  (blog.user.toString() !== user.id) {
-  return response.status(401).json({error: 'Unauthorised '})
-}
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
-})
 
-
+   
 
 module.exports = blogsRouter
