@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/65def30b273250a0437a7c4b
+Content-Type: application/json
+
+{
+"title": "React functional components",
+ "author": "Heidi",
+  "url": "react.com", 
+  "likes": 500,
+  "userId": "65d5dfb2740eaed847fe4d75"
+}

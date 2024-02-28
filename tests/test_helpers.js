@@ -68,20 +68,23 @@ const initialBlogs = [
   const user = {
     username: "Testi", 
     name: "Testaaja H", 
-    password: "salainen"
+    password: "salainen",
+    _id: "12345"
   }
+  let token;
 
   const userLoginToken = async () => {
     const response = await api
     .post('/api/login')
     .send(user)
-    console.log("testailua",response.body)
-  return response.body.token
+  token = response.body.token; 
+  return token; 
 }
 
   module.exports = {
     initialBlogs, 
     blogsInDb,
     usersInDb,
-    userLoginToken
+    userLoginToken,
+    user
   }

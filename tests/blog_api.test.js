@@ -3,13 +3,14 @@ const supertest = require('supertest')
 const helper = require('./test_helpers')
 const app = require('../app')
 const api = supertest(app)
-
 const Blog = require('../models/blog')
-const bcrypt = require('bcrypt')
+
+
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
+ 
 })
 
 test('blogs are retured in json form', async () => {
@@ -32,29 +33,38 @@ test('id is defined in correct way not _id',async() => {
   expect(blogs[0].id).toBeDefined()
   expect(blogs[0]._id).not.toBeDefined()
 })
+const user = {
+  username: "Testi", 
+  name: "Testaaja H", 
+  password: "salainen",
+  _id: "12345"
+}
 
 test('new blogs are added in the correct way', async() => {
+  const token = await helper.userLoginToken();
   const newBlog =  {
     title: "Test title for new blog",
     author: "Test author",
     url: "www.testnewblogs.com",
-    likes: 5
+    likes: 5,
+    user: user._id
   }
+
   await api
   .post('/api/blogs')
-  .set('Authorization', 'Bearer ' + token)
   .send(newBlog)
-  .expect(201)
+  .set('Authorization', `Bearer ${token}`)
+  .expect(200)
   .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-  //const title = blogsAtEnd.map(n => n.title)
- // expect(title).toContain('Test title for new blog')
+  const title = blogsAtEnd.map(b => b.title)
+ expect(title).toContain('Test title for new blog')
 
- // const author = blogsAtEnd.map(n => n.author)
-  //expect(author).toContain('Test author')
+ const author = blogsAtEnd.map(b => b.author)
+ expect(author).toContain('Test author')
 })
 
 
@@ -141,6 +151,37 @@ test('passwprd too short returns error code 400', async () => {
   const usersAtEnd = await helper.usersInDb()
   expect(usersAtEnd).toHaveLength(usersAtStart.length)
 })
+test('Make update to a fist blog', async () => {
+  const blogs = await helper.blogsInDb()
+  const id = blogs[0].id
+
+  const updateBlogObject = {
+    title: 'This is updated blog post',
+    author: 'Testaaja',
+    url: 'www.updatedblogpost.com',
+    likes: 10
+  }
+
+  await api
+    .put(`/api/blogs/${id}`)
+    .send(updateBlogObject)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+  const title = blogsAtEnd.map(b => b.title)
+  expect(title).toContain('This is updated blog post')
+
+  const author = blogsAtEnd.map(b => b.author)
+  expect(author).toContain('Testaaja')
+
+  const url = blogsAtEnd.map(b => b.url)
+  expect(url).toContain('www.updatedblogpost.com')
+
+  const likes = blogsAtEnd.map(b => b.likes)
+  expect(likes).toContain(10)
+})
+
 
 afterAll(async () => {
   await mongoose.connection.close()
