@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hcmlhIiwiaWQiOiI2NWQ1ZGZiMjc0MGVhZWQ4NDdmZTRkNzUiLCJpYXQiOjE3MDkxMDk2NzUsImV4cCI6MTcwOTExMzI3NX0.9fbIwSL-rMzlnhvfGd0Xv3IGFiLzMEP1CnnNcZJwwK4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hcmlhIiwiaWQiOiI2NWQ1ZGZiMjc0MGVhZWQ4NDdmZTRkNzUiLCJpYXQiOjE3MDkxMTUxMjEsImV4cCI6MTcwOTExODcyMX0.9NPFZ7WM2Y8zV0glNOnWXuUeu9URc3UjhqVHvld5Eyo
 
 {
 "title": "Best CSS tricks",

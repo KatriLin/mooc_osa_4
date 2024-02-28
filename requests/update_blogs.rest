@@ -1,10 +1,10 @@
-PUT http://localhost:3003/api/blogs/65def30b273250a0437a7c4b
+PUT http://localhost:3003/api/blogs/65df06ff80153aaf87d8d0e3
 Content-Type: application/json
 
 {
-"title": "React functional components",
- "author": "Heidi",
-  "url": "react.com", 
-  "likes": 500,
-  "userId": "65d5dfb2740eaed847fe4d75"
+  "title": "Must learn CSS tricks",
+  "author": "Sonia",
+  "url": "testingupdate.com",
+  "likes": 50,
+  "user": "65d5dfb2740eaed847fe4d75"
 }
